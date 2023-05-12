@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+  teamcity:
+    container_name: teamcity
+    image: jetbrains/teamcity-server
+    volumes:
+      - $PWD/data:/data/teamcity_server/datadir
+      - $PWD/logs:/opt/teamcity/logs
+    ports:
+      - 8111:8111
+
+  agent1:
+    container_name: agent1
+    image: jetbrains/teamcity-agent
+    environment:
+      - SERVER_URL=http://teamcity:8111
+      - DOCKER_IN_DOCKER=start
+    privileged: true
+    user: root
+    volumes:
+      - $PWD/agent1:/data/teamcity_agent/conf
+
+
